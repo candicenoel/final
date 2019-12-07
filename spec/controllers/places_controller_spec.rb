@@ -17,11 +17,17 @@ RSpec.describe PlacesController, type: :controller do
 
   describe "places#create action" do
     it "should successfully create a new place in our database" do
-      post :create, params: { place: { name: '' } }
+      post :create, params: { place: { address: '' } }
       expect(response).to redirect_to root_path
 
       place = Place.last
-      expect(place.name).to eq('')
+      expect(place.address).to eq('')
+    end
+
+    it "should properly deal with validation errors" do
+      post :create, params: { place: { address: '' } }
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(Place.count).to eq 0
     end
   end
 end

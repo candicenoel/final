@@ -8,12 +8,16 @@ class PlacesController < ApplicationController
 
   def create
     @place = Place.create(place_params)
-    redirect_to root_path
+    if @place.valid?
+      redirect_to root_path
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
   private
 
   def place_params
-    params.require(:place).permit(:name)
+    params.require(:place).permit(:address)
   end
 end
