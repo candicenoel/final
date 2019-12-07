@@ -14,4 +14,14 @@ RSpec.describe PlacesController, type: :controller do
       expect(response).to have_http_status(:success)
     end
   end
+
+  describe "places#create action" do
+    it "should successfully create a new place in our database" do
+      post :create, params: { place: { name: '' } }
+      expect(response).to redirect_to root_path
+
+      place = Place.last
+      expect(place.name).to eq('')
+    end
+  end
 end
