@@ -8,6 +8,13 @@ class PlacesController < ApplicationController
   def index
   end
 
+  def show
+    @place = Place.find_by_id(params[:id])
+    if @place.blank?
+      render plain: 'Not Found :(', status: :not_found
+    end
+  end
+
   def create
     @place = current_user.places.create(place_params)
     if @place.valid?

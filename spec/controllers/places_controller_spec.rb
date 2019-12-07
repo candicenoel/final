@@ -1,6 +1,20 @@
 require 'rails_helper'
 
 RSpec.describe PlacesController, type: :controller do
+  describe "places#show action" do
+    it "should successfully show the page if the place is found" do
+      place = FactoryBot.create(:place)
+      get :show, params: { id: place.id }
+      expect(response).to have_http_status(:success)
+    end
+
+    it "should return a 404 error if the place is not found" do
+      get :show, params: { id: 'TACOCAT' }
+      expect(response).to have_http_status(:not_found)
+    end
+  end
+
+
   describe "places#index action" do
     it "should successfully show the page" do
       get :index
@@ -26,7 +40,7 @@ RSpec.describe PlacesController, type: :controller do
   describe "places#create action" do
 
     it "should require users to be logged in" do
-      post :create, params: { place: { address: '' } }
+      post :create, params: { place: { address: '595 S. Clinton St, Denver, CO 80247' } }
       expect(response).to redirect_to new_user_session_path
     end
 
@@ -34,11 +48,11 @@ RSpec.describe PlacesController, type: :controller do
       user = FactoryBot.create(:user)
       sign_in user
 
-      post :create, params: { place: { address: '' } }
+      post :create, params: { place: { address: '595 S. Clinton St, Denver, CO 80247' } }
       expect(response).to redirect_to root_path
 
       place = Place.last
-      expect(place.address).to eq('')
+      expect(place.address).to eq('595 S. Clinton St, Denver, CO 80247')
       expect(place.user).to eq(user)
     end
 
