@@ -1,6 +1,20 @@
 require 'rails_helper'
 
 RSpec.describe PlacesController, type: :controller do
+
+  describe "places#edit action" do
+    it "should successfully show the edit form if the place is found" do
+      place = FactoryBot.create(:place)
+      get :edit, params: { id: place.id }
+      expect(response).to have_http_status(:success)
+    end
+
+    it "should return a 404 error message if the place is not found" do
+      get :edit, params: { id: 'SWAG' }
+      expect(response).to have_http_status(:not_found)
+    end
+  end
+
   describe "places#show action" do
     it "should successfully show the page if the place is found" do
       place = FactoryBot.create(:place)

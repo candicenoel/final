@@ -15,6 +15,10 @@ class PlacesController < ApplicationController
     end
   end
 
+  def edit
+    @place = Place.find_by_id(params[:id])
+  end
+
   def create
     @place = current_user.places.create(place_params)
     if @place.valid?
