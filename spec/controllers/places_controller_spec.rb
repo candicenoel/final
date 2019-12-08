@@ -1,6 +1,28 @@
 require 'rails_helper'
 
 RSpec.describe PlacesController, type: :controller do
+  describe "places#update action" do
+    it "should allow users to successfully update places" do
+      place = FactoryBot.create(:place, address: 'Initial Value')
+      patch :update, params: { id: place.id, place: { address: 'Changed' } }
+      expect(response).to redirect_to root_path
+      place.reload
+      expect(place.address).to eq 'Changed'
+    end
+
+    it "should have http 404 error if the place cannot be found" do
+      patch :update, params: { id: "YOLOSWAG", place: { address: 'Changed' } }
+      expect(response).to have_http_status(:not_found)
+    end
+
+    it "should render the edit form with an http status of unprocessable_entity" do
+      place = FactoryBot.create(:place, address: 'Initial Value')
+      patch :update, params: { id: place.id, place: { address: '' } }
+      expect(response).to have_http_status(:unprocessable_entity)
+      place.reload
+      expect(place.address).to eq 'Initial Value'
+    end
+  end
 
   describe "places#edit action" do
     it "should successfully show the edit form if the place is found" do
@@ -54,7 +76,7 @@ RSpec.describe PlacesController, type: :controller do
   describe "places#create action" do
 
     it "should require users to be logged in" do
-      post :create, params: { place: { address: '595 S. Clinton St, Denver, CO 80247' } }
+      post :create, params: { place: { address: '' } }
       expect(response).to redirect_to new_user_session_path
     end
 
@@ -62,11 +84,11 @@ RSpec.describe PlacesController, type: :controller do
       user = FactoryBot.create(:user)
       sign_in user
 
-      post :create, params: { place: { address: '595 S. Clinton St, Denver, CO 80247' } }
+      post :create, params: { place: { address: '' } }
       expect(response).to redirect_to root_path
 
       place = Place.last
-      expect(place.address).to eq('595 S. Clinton St, Denver, CO 80247')
+      expect(place.address).to eq('')
       expect(place.user).to eq(user)
     end
 
