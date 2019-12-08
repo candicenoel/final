@@ -1,6 +1,22 @@
 require 'rails_helper'
 
 RSpec.describe PlacesController, type: :controller do
+
+  describe "places#destroy action" do
+    it "should allow a user to destroy places" do
+      place = FactoryBot.create(:place)
+      delete :destroy, params: { id: place.id }
+      expect(response).to redirect_to root_path
+      place = Place.find_by_id(place.id)
+      expect(place).to eq nil
+    end
+
+    it "should return a 404 message if we cannot find a place with the id that is specified" do
+      delete :destroy, params: { id: 'SPACEDUCK' }
+      expect(response).to have_http_status(:not_found)
+    end
+  end
+
   describe "places#update action" do
     it "should allow users to successfully update places" do
       place = FactoryBot.create(:place, address: 'Initial Value')

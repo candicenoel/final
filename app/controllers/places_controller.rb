@@ -1,6 +1,13 @@
 class PlacesController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create]
 
+  def destroy
+    @place = Place.find_by_id(params[:id])
+    return render_not_found if @place.blank?
+    @place.destroy
+    redirect_to root_path
+  end
+
   def update
     @place = Place.find_by_id(params[:id])
     return render_not_found if @place.blank?
