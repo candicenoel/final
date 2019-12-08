@@ -1,1 +1,8 @@
 <h1>Places</h1>
+
+<% @places.each do |place| %>
+<div>
+  <%= place.address %>
+  <%= image_tag place.facility_maps.url %>
+</div>
+<% end %>

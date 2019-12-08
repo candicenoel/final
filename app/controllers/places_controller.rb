@@ -27,6 +27,7 @@ class PlacesController < ApplicationController
   end
 
   def index
+    @places = Place.all
   end
 
   def show
@@ -52,11 +53,11 @@ class PlacesController < ApplicationController
   private
 
   def place_params
-    params.require(:place).permit(:address)
+    params.require(:place).permit(:address, :facility_maps)
   end
 
   def render_not_found(status=:not_found)
     render plain: "#{status.to_s.titleize} :(", status: status
   end
-  
+
 end
