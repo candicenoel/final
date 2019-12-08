@@ -8,7 +8,7 @@ FactoryBot.define do
   end
 
   factory :place do
-    address { '' }
+    address { '595 S. Clinton St, Denver, CO 80247' }
     association :user
   end
 end

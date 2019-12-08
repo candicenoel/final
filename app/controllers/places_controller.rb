@@ -1,9 +1,10 @@
 class PlacesController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create]
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
 
   def destroy
     @place = Place.find_by_id(params[:id])
     return render_not_found if @place.blank?
+    return render_not_found(:forbidden) if @place.user != current_user
     @place.destroy
     redirect_to root_path
   end
@@ -11,8 +12,9 @@ class PlacesController < ApplicationController
   def update
     @place = Place.find_by_id(params[:id])
     return render_not_found if @place.blank?
+    return render_not_found(:forbidden) if @place.user != current_user
+    
     @place.update_attributes(place_params)
-
     if @place.valid?
       redirect_to root_path
     else
@@ -34,7 +36,8 @@ class PlacesController < ApplicationController
 
   def edit
     @place = Place.find_by_id(params[:id])
-     return render_not_found if @place.blank?
+    return render_not_found if @place.blank?
+    return render_not_found(:forbidden) if @place.user != current_user
   end
 
   def create
@@ -52,7 +55,8 @@ class PlacesController < ApplicationController
     params.require(:place).permit(:address)
   end
 
-  def render_not_found
-    render plain: 'Not Found :(', status: :not_found
+  def render_not_found(status=:not_found)
+    render plain: "#{status.to_s.titleize} :(", status: status
   end
+  
 end
