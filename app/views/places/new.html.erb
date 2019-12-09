@@ -1,9 +1,13 @@
-<h1>New Place</h1>
+<div class="col-10 offset-1 col-sm-8 offset-sm-2 col-md-6 offset-md-3 card form">
 
-<%= simple_form_for @place do |f| %>
-  <%= f.input :name %>
-  <%= f.input :address %>
-  <%= f.input :description %>
-  <%= f.input :facility_maps, as: :file %>
-  <%= f.submit "Submit" %>
-<% end %>
+  <h1>New Place</h1>
+
+  <%= simple_form_for @place do |f| %>
+    <%= f.input :name %>
+    <%= f.input :address %>
+    <%= f.input :description %>
+    <%= f.input :facility_maps, as: :file %>
+    <%= f.submit "Submit", class: 'my-btn' %>
+  <% end %>
+
+</div>

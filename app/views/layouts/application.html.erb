@@ -4,20 +4,21 @@
     <title>SafeResponse</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <link href="https://fonts.googleapis.com/css?family=Poiret+One&display=swap" rel="stylesheet">
   </head>
   <body>
     <div class="top-nav">
       <div class="col-10 offset-1 col-sm-8 offset-sm-2 col-md-6 offset-md-3">
-        <div class="brand">
+        <div class="brand float-left">
           SafeResponse
         </div>
-        <div class="add">
+        <div class="add float-right">
           <% if current_user %>
             You're signed in as <%= current_user.email %>.
-            <%= link_to "Sign out", destroy_user_session_path, method: :delete %>
+            <%= link_to "Add New Place", new_place_path %>
+            <%= link_to "Sign Out", destroy_user_session_path, method: :delete %>
           <% else %>
             <%= link_to "Sign In", new_user_session_path %>
             <%= link_to "Sign Up", new_user_registration_path %>
